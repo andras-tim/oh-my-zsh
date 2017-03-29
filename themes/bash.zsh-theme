@@ -57,16 +57,24 @@ function shortpath()
     echo "${path_array[*]}"
 }
 
-function scm_basedir()
+function scm_base_info()
 {
     # SCM: GIT
-    base="$(git rev-parse --show-toplevel 2>/dev/null)"
+    local base="$(git rev-parse --show-toplevel 2>/dev/null)"
+    local scm_user="$(git config user.email | sed 's>^[^@]*>>')"
 
     # SCM: HG (Mercurial)
-    [[ "$base" == '' ]] && base="$(hg root 2>/dev/null)"
+    if [[ "${base}" == '' ]]; then
+        base="$(hg root 2>/dev/null)"
+        scm_user=''
+    fi
+
+    [[ "${scm_user}" != '' ]] && scm_user=":%{$fg_bold[blue]%}${scm_user}%{$reset_color%}"
 
     # if exists then returns with $base
-    if [[ "$base" != '' ]] && [ -e "$base" ] && echo "(%{$fg[cyan]%}$(shortpath "$base" ${ZSH_THEME_GIT_PROMPT_SHORTPATH_LENGTH})%{$reset_color%}) "
+    if [[ "${base}" != '' ]] && [[ -e "${base}" ]]; then
+        echo "(%{$fg[cyan]%}$(shortpath "${base}" ${ZSH_THEME_GIT_PROMPT_SHORTPATH_LENGTH})%{$reset_color%}${scm_user}) "
+    fi
 }
 
 # Colors vary depending on time lapsed.
@@ -125,4 +133,4 @@ function git_time_since_commit()
 if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="green"; fi
 
 PROMPT='%{$reset_color%}%{$fg_bold[$NCOLOR]%}%n@%m%{$reset_color%}:%{$fg_bold[blue]%}%~%{$reset_color%}%{$fg_bold[gray]%}$(prompt_char) %{$reset_color%}'
-RPROMPT='${return_status}$(scm_basedir)$(git_time_since_commit)$(git_prompt_status) %{$reset_color%}$(git_prompt_short_sha)$(git_prompt_info)'
+RPROMPT='${return_status}$(scm_base_info)$(git_time_since_commit)$(git_prompt_status) %{$reset_color%}$(git_prompt_short_sha)$(git_prompt_info)'
