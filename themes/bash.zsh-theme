@@ -132,5 +132,10 @@ function git_time_since_commit()
 
 if [ $UID -eq 0 ]; then NCOLOR="red"; else NCOLOR="green"; fi
 
-PROMPT='%{$reset_color%}%{$fg_bold[$NCOLOR]%}%n@%m%{$reset_color%}:%{$fg_bold[blue]%}%~%{$reset_color%}%{$fg_bold[gray]%}$(prompt_char) %{$reset_color%}'
+# set variable identifying the chroot you work in (used in the prompt below)
+if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
+    debian_chroot=$(cat /etc/debian_chroot)
+fi
+
+PROMPT='%{$reset_color%}${debian_chroot:+($debian_chroot)}%{$fg_bold[$NCOLOR]%}%n@%m%{$reset_color%}:%{$fg_bold[blue]%}%~%{$reset_color%}%{$fg_bold[gray]%}$(prompt_char) %{$reset_color%}'
 RPROMPT='${return_status}$(scm_base_info)$(git_time_since_commit)$(git_prompt_status) %{$reset_color%}$(git_prompt_short_sha)$(git_prompt_info)'
