@@ -63,12 +63,6 @@ function scm_base_info()
     local base="$(git rev-parse --show-toplevel 2>/dev/null)"
     local scm_user="$(git config user.email | sed 's>^[^@]*>>')"
 
-    # SCM: HG (Mercurial)
-    if [[ "${base}" == '' ]]; then
-        base="$(hg root 2>/dev/null)"
-        scm_user=''
-    fi
-
     [[ "${scm_user}" != '' ]] && scm_user=":%{$fg_bold[blue]%}${scm_user}%{$reset_color%}"
 
     # if exists then returns with $base
