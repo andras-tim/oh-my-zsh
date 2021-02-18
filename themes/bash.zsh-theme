@@ -62,8 +62,9 @@ function scm_base_info()
     # SCM: GIT
     local base="$(git rev-parse --show-toplevel 2>/dev/null)"
     local scm_user="$(git config user.email | sed 's>^[^@]*>>')"
+    local scm_signed="$(git config commit.gpgsign | grep 'true' | sed 's>true>*>')"
 
-    [[ "${scm_user}" != '' ]] && scm_user=":%{$fg_bold[blue]%}${scm_user}%{$reset_color%}"
+    [[ "${scm_user}" != '' ]] && scm_user=":%{$fg_bold[blue]%}${scm_user}${scm_signed}%{$reset_color%}"
 
     # if exists then returns with $base
     if [[ "${base}" != '' ]] && [[ -e "${base}" ]]; then
