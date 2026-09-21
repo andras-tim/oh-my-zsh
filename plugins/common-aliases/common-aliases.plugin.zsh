@@ -12,6 +12,8 @@ alias ldot='ls -ld .*'
 alias lS='ls -1FSsh'
 alias lart='ls -1Fcart'
 alias lrt='ls -1Fcrt'
+alias lsr='ls -lARFh' #Recursive list of files and directories
+alias lsn='ls -1'     #A column contains name of files and directories
 
 alias zshrc='${=EDITOR} ${ZDOTDIR:-$HOME}/.zshrc' # Quick access to the .zshrc file
 
@@ -33,8 +35,8 @@ alias -g NUL="> /dev/null 2>&1"
 alias -g P="2>&1| pygmentize -l pytb"
 
 alias dud='du -d 1 -h'
-alias duf='du -sh *'
-alias fd='find . -type d -name'
+(( $+commands[duf] )) || alias duf='du -sh *'
+(( $+commands[fd] )) || alias fd='find . -type d -name'
 alias ff='find . -type f -name'
 
 alias h='history'
@@ -69,14 +71,11 @@ if is-at-least 4.2.0; then
   _media_fts=(ape avi flv m4a mkv mov mp3 mpeg mpg ogg ogm rm wav webm)
   for ft in $_media_fts; do alias -s $ft=mplayer; done
 
-  #read documents
-  alias -s pdf=acroread
-  alias -s ps=gv
-  alias -s dvi=xdvi
-  alias -s chm=xchm
-  alias -s djvu=djview
+  # read documents with the platform's default application
+  _doc_fts=(pdf ps dvi chm djvu)
+  for ft in $_doc_fts; do alias -s $ft=open_command; done
 
-  #list whats inside packed file
+  #list what's inside packed file
   alias -s zip="unzip -l"
   alias -s rar="unrar l"
   alias -s tar="tar tf"

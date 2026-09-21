@@ -10,7 +10,7 @@
 # scp1@shiva:pts/9-> /home » scp1 (0)
 # >
 #
-# that's  user@host:pts/-> splitted path (return status)
+# that's  user@host:pts/-> split path (return status)
 #
 # If the current directory is a git repository, we span 3 lines;
 #
@@ -38,6 +38,8 @@ local c13=$'\e[38;5;196m\e[1m'
 
 
 zsh_path() {
+  setopt localoptions nopromptsubst
+
   local colors
   colors=$(echoti colors)
 
@@ -100,7 +102,6 @@ zstyle ':vcs_info:*' actionformats \
 zstyle ':vcs_info:*' formats \
     "%{$c8%}%s%%{$c7%}❨ %{$c9%}%{$c11%}%b%{$c7%} ❩%{$reset_color%}%f "
 
-zstyle ':vcs_info:(sv[nk]|bzr):*' branchformat '%b%F{1}:%F{3}%r'
 zstyle ':vcs_info:*' enable git
 
 add-zsh-hook precmd prompt_jnrowe_precmd

@@ -1,2 +1,6 @@
-github: [robbyrussell, mcornella, larson-carter]
+github: 
+  - ohmyzsh
+  - robbyrussell
+  - mcornella
+  - carlosala
 open_collective: ohmyzsh
